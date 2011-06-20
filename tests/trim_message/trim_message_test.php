@@ -40,6 +40,10 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'message'		=> 'foo[quote=&quot;he[llo&quot;:2sda49fx]test[/quote:2sda49fx]bar',
 				'bbcode_uid'	=> '2sda49fx',
 			),
+			array(
+				'message'		=> 'foo[url:2sda49fx]https://github.com/nickvergessen/phpbb3-tools-trim-message[/url:2sda49fx]bar',
+				'bbcode_uid'	=> '2sda49fx',
+			),
 		);
 
 		$cases = array(
@@ -153,6 +157,14 @@ class phpbb_trim_message_test extends phpbb_test_case
 			array(
 				'message_set' => 5, 'length' => 5, 'trimmed' => true,
 				'expected' => 'foo[quote=&quot;he[llo&quot;:2sda49fx]te [...][/quote:2sda49fx]',
+			),
+
+			/**
+			* Sensitive BBCode
+			*/
+			array(
+				'message_set' => 6, 'length' => 4, 'trimmed' => true,
+				'expected' => 'foo[url:2sda49fx]https://github.com/nickvergessen/phpbb3-tools-trim-message[/url:2sda49fx]b [...]',
 			),
 		);
 

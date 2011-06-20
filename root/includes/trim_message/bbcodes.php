@@ -8,7 +8,7 @@
 * @package    trim_message
 * @copyright  2011
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    1.0
+* @version    1.1
 */
 
 /**
@@ -24,6 +24,14 @@ if (!defined('IN_PHPBB'))
 */
 class phpbb_trim_message_bbcodes
 {
+	/**
+	* Some BBCodes, such as img and flash should not be split up in their middle.
+	* So I added a sensitive BBCode array which protects BBCodes from being split.
+	* You can also need to add your custom bbcodes in here.
+	*/
+	private $sensitive_bbcodes = array('url', 'flash', 'flash=', 'attachment', 'attachment=', 'img', 'email', 'email=');
+	private $is_sensitive = false;
+
 	/**
 	* Variables
 	*/
@@ -156,17 +164,23 @@ class phpbb_trim_message_bbcodes
 					$this->cur_position += utf8_strlen($exploded_parts[1]);
 					$allow_close_quote = false;
 				}
-				// We matched it something ;)
+				// We matched something ;)
 				else if ($exploded_parts[0][0] != '/')
 				{
 					// Open BBCode-tag
 					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
+					$bbcode_tag_extended = $this->filter_bbcode_tag($exploded_parts[0], false, false);
+					if (in_array($bbcode_tag_extended, $this->sensitive_bbcodes))
+					{
+						$this->is_sensitive = true;
+					}
+
 
 					$this->open_bbcode($bbcode_tag, $this->cur_position);
 					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
 					$this->bbcode_action($bbcode_tag, 'open_end', $this->cur_position);
 
-					if (!$allow_close_quote)
+					if (!$allow_close_quote && !$this->is_sensitive)
 					{
 						// If we allow a closing quote, we are in the username.
 						// We do not count that as content-length.
@@ -190,6 +204,7 @@ class phpbb_trim_message_bbcodes
 					{
 						$bbcode_tag_extended = '';
 					}
+					$this->is_sensitive = false;
 
 					$this->bbcode_action($bbcode_tag, 'close_start', $this->cur_position);
 					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
@@ -429,7 +444,7 @@ class phpbb_trim_message_bbcodes
 	*
 	* @return	string		plain bbcode-tag
 	*/
-	static public function filter_bbcode_tag($bbcode_tag, $strip_information = true)
+	static public function filter_bbcode_tag($bbcode_tag, $strip_information = true, $strip_equal = true)
 	{
 		if ($bbcode_tag[0] == '/')
 		{
@@ -446,9 +461,9 @@ class phpbb_trim_message_bbcodes
 			return 'list';
 		}
 
-		if ($strip_information && (($equals = utf8_strpos($bbcode_tag, '=')) !== false))
+		if (($strip_information || !$strip_equal) && (($equals = utf8_strpos($bbcode_tag, '=')) !== false))
 		{
-			$bbcode_tag = utf8_substr($bbcode_tag, 0, $equals);
+			$bbcode_tag = utf8_substr($bbcode_tag, 0, (!$strip_equal) ? $equals + 1 : $equals);
 		}
 
 		return $bbcode_tag;
