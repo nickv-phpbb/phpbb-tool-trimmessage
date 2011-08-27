@@ -362,7 +362,8 @@ class phpbb_trim_message_bbcodes
 	static public function get_content_length($content)
 	{
 		$content_length = utf8_strlen($content);
-		$last_html_opening = $last_html_closing = $last_smiley = false;
+		$last_smiley = false;
+		$last_html_opening = $last_html_closing = 0;
 		while (($last_html_opening = utf8_strpos($content, '<', $last_html_closing)) !== false)
 		{
 			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
