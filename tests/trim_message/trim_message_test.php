@@ -44,6 +44,10 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'message'		=> 'foo[url:2sda49fx]https://github.com/nickvergessen/phpbb3-tools-trim-message[/url:2sda49fx]bar',
 				'bbcode_uid'	=> '2sda49fx',
 			),
+			array(
+				'message'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h',
+				'bbcode_uid'	=> '2sda49fx',
+			),
 		);
 
 		$cases = array(
@@ -87,7 +91,11 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'expected'		=> 'h [...]',
 			),
 			array(
-				'message_set'	=> 1, 'length' => 6, 'trimmed' => true,
+				'message_set'	=> 1, 'length' => 7, 'trimmed' => true,
+				'expected'		=> 'h<!-- s:geek: --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt=":geek:" title="Geek" /><!-- s:geek: --> [...]',
+			),
+			array(
+				'message_set'	=> 1, 'length' => 8, 'trimmed' => true,
 				'expected'		=> 'h<!-- s:geek: --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt=":geek:" title="Geek" /><!-- s:geek: -->h [...]',
 			),
 			array(
@@ -97,6 +105,34 @@ class phpbb_trim_message_test extends phpbb_test_case
 			array(
 				'message_set'	=> 1, 'length' => 12, 'trimmed' => false,
 				'expected'		=> 'h<!-- s:geek: --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt=":geek:" title="Geek" /><!-- s:geek: -->h<!-- s:geek: --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt=":geek:" title="Geek" /><!-- s:geek: -->h',
+			),
+
+			/**
+			* Breaking within Smilies that use [ and ] as limiter
+			*/
+			array(
+				'message_set'	=> 7, 'length' => 1, 'trimmed' => true,
+				'expected'		=> 'h [...]',
+			),
+			array(
+				'message_set'	=> 7, 'length' => 3, 'trimmed' => true,
+				'expected'		=> 'h [...]',
+			),
+			array(
+				'message_set'	=> 7, 'length' => 7, 'trimmed' => true,
+				'expected'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] --> [...]',
+			),
+			array(
+				'message_set'	=> 7, 'length' => 8, 'trimmed' => true,
+				'expected'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h [...]',
+			),
+			array(
+				'message_set'	=> 7, 'length' => 11, 'trimmed' => false,
+				'expected'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h',
+			),
+			array(
+				'message_set'	=> 7, 'length' => 12, 'trimmed' => false,
+				'expected'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h',
 			),
 
 			/**
