@@ -1,17 +1,17 @@
 <?php
 /**
 *
-* @package testing
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @package phpBB Trim Message Tool
+* @copyright (c) 2013 nickvergessen
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
-require_once dirname(__FILE__) . '/../../phpBB/includes/utf/utf_tools.php';
-require_once dirname(__FILE__) . '/../../phpBB/includes/trim_message/trim_message.php';
-require_once dirname(__FILE__) . '/../../phpBB/includes/trim_message/bbcodes.php';
+namespace nickvergessen\trimmessage\tests\testcases;
 
-class phpbb_trim_message_test extends phpbb_test_case
+require_once dirname(__FILE__) . '/../../../../../includes/utf/utf_tools.php';
+
+class trim_test extends \nickvergessen\trimmessage\tests\testframework\test_case
 {
 	public function trim_message_data()
 	{
@@ -230,7 +230,7 @@ class phpbb_trim_message_test extends phpbb_test_case
 			$this->markTestIncomplete($incomplete);
 		}
 
-		$object = new phpbb_trim_message($message, $bbcode_uid, $length, ' [...]', 0);
+		$object = new \nickvergessen\trimmessage\trim_message($message, $bbcode_uid, $length, ' [...]', 0);
 		$this->assertEquals($expected, $object->message());
 		$this->assertEquals($trimmed, $object->is_trimmed());
 	}

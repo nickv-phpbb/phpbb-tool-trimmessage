@@ -11,19 +11,16 @@
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    1.2
 */
+namespace nickvergessen\trimmessage;
 
 /**
 * @ignore
 */
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
 
 /**
 * phpbb_trim_message class
 */
-class phpbb_trim_message
+class trim_message
 {
 	/**
 	* Variables
@@ -108,7 +105,7 @@ class phpbb_trim_message
 		* Prepare the difficult action
 		*/
 		$this->trimmed_message = $this->message;
-		$this->bbcodes = new phpbb_trim_message_bbcodes($this->trimmed_message, $this->bbcode_uid, $this->length);
+		$this->bbcodes = new \nickvergessen\trimmessage\bbcodes($this->trimmed_message, $this->bbcode_uid, $this->length);
 
 		/**
 		* Step 1:	Get a list of all BBCodes

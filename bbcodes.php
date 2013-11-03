@@ -10,19 +10,16 @@
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    1.2
 */
+namespace nickvergessen\trimmessage;
 
 /**
 * @ignore
 */
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
 
 /**
 * phpbb_trim_message_bbcodes class
 */
-class phpbb_trim_message_bbcodes
+class bbcodes
 {
 	/**
 	* Some BBCodes, such as img and flash should not be split up in their middle.
