@@ -13,6 +13,10 @@ This tool contains a class, that is able to trim a message from the phpbb messag
 
 ## How to run tests ##
 
+We use Travis-CI as a continous intergtation server and phpunit for our unit testing. See more information on the [phpBB development wiki](https://wiki.phpbb.com/Unit_Tests).
+
+[![Build Status](https://travis-ci.org/nickvergessen/phpbb-tool-trimmessage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-tool-trimmessage)
+
 1. `cd ext/nickvergessen/trimmessage`
 2. `..\..\..\vendor\bin\phpunit`
 
