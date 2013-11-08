@@ -4,7 +4,7 @@ This tool contains a class, that is able to trim a message from the phpbb messag
 
 ## How to use ##
 
-1. Clone the tool into phpBB/ext/nickvergessen/trimmessage
+1. Clone the tool into `phpBB/ext/nickvergessen/trimmessage`
 2. Use the code:
 
 		$object = new \nickvergessen\trimmessage\trim_message($message, $bbcode_uid, $length);
