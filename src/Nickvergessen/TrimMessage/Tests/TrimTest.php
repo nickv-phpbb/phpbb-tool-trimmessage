@@ -1,17 +1,14 @@
 <?php
 /**
-*
-* @package testing
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-*/
+ *
+ * @package phpBB Translation Validator
+ * @copyright (c) 2014 phpBB Ltd.
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
+namespace Nickvergessen\TrimMessage\Tests;
 
-require_once dirname(__FILE__) . '/../../phpBB/includes/utf/utf_tools.php';
-require_once dirname(__FILE__) . '/../../phpBB/includes/trim_message/trim_message.php';
-require_once dirname(__FILE__) . '/../../phpBB/includes/trim_message/bbcodes.php';
-
-class phpbb_trim_message_test extends phpbb_test_case
+class TrimTest extends \PHPUnit_Framework_TestCase
 {
 	public function trim_message_data()
 	{
@@ -52,8 +49,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 
 		$cases = array(
 			/**
-			* Breaking within BBCodes
-			*/
+			 * Breaking within BBCodes
+			 */
 			array(
 				'message_set'	=> 0, 'length' => 0, 'trimmed' => true,
 				'expected'		=> ' [...]',
@@ -80,8 +77,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* Breaking within Smilies
-			*/
+			 * Breaking within Smilies
+			 */
 			array(
 				'message_set'	=> 1, 'length' => 1, 'trimmed' => true,
 				'expected'		=> 'h [...]',
@@ -108,8 +105,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* Breaking within Smilies that use [ and ] as limiter
-			*/
+			 * Breaking within Smilies that use [ and ] as limiter
+			 */
 			array(
 				'message_set'	=> 7, 'length' => 1, 'trimmed' => true,
 				'expected'		=> 'h [...]',
@@ -136,8 +133,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* Breaking within Quotes with BBCodes in username.
-			*/
+			 * Breaking within Quotes with BBCodes in username.
+			 */
 			array(
 				'message_set' => 2, 'length' => 1, 'trimmed' => true,
 				'expected' => '[quote=&quot;[url=http&#58;//www&#46;example&#46;tdl/:2sda49fx][color=#00BF00:2sda49fx]bbcodes in quotes...[/color:2sda49fx][/url:2sda49fx]&quot;:2sda49fx][color=#FF0000:2sda49fx]h [...][/color:2sda49fx][/quote:2sda49fx]',
@@ -152,8 +149,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* Breaking within lists
-			*/
+			 * Breaking within lists
+			 */
 			array(
 				'message_set' => 3, 'length' => 1, 'trimmed' => true,
 				'expected' => '[list:1wmer8b2][*:1wmer8b2]1 [...][/*:m:1wmer8b2][/list:u:1wmer8b2]',
@@ -164,8 +161,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* Handling non-bbcode []-brackets
-			*/
+			 * Handling non-bbcode []-brackets
+			 */
 			array(
 				'message_set' => 4, 'length' => 6, 'trimmed' => true,
 				'expected' => 'Thanks [...]',
@@ -188,16 +185,16 @@ class phpbb_trim_message_test extends phpbb_test_case
 			),
 
 			/**
-			* [ Brackets in quote-usernames
-			*/
+			 * [ Brackets in quote-usernames
+			 */
 			array(
 				'message_set' => 5, 'length' => 5, 'trimmed' => true,
 				'expected' => 'foo[quote=&quot;he[llo&quot;:2sda49fx]te [...][/quote:2sda49fx]',
 			),
 
 			/**
-			* Sensitive BBCode
-			*/
+			 * Sensitive BBCode
+			 */
 			array(
 				'message_set' => 6, 'length' => 4, 'trimmed' => true,
 				'expected' => 'foo[url:2sda49fx]https://github.com/nickvergessen/phpbb3-tools-trim-message[/url:2sda49fx]b [...]',
@@ -221,8 +218,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 	}
 
 	/**
-	* @dataProvider trim_message_data
-	*/
+	 * @dataProvider trim_message_data
+	 */
 	public function test_trim_message($message, $bbcode_uid, $length, $expected, $trimmed, $incomplete)
 	{
 		if ($incomplete)
@@ -230,8 +227,8 @@ class phpbb_trim_message_test extends phpbb_test_case
 			$this->markTestIncomplete($incomplete);
 		}
 
-		$object = new phpbb_trim_message($message, $bbcode_uid, $length, ' [...]', 0);
-		$this->assertEquals($expected, $object->message());
-		$this->assertEquals($trimmed, $object->is_trimmed());
+		$TrimMessage = new \Nickvergessen\TrimMessage\TrimMessage($message, $bbcode_uid, $length, ' [...]', 0);
+		$this->assertEquals($expected, $TrimMessage->message());
+		$this->assertEquals($trimmed, $TrimMessage->is_trimmed());
 	}
 }

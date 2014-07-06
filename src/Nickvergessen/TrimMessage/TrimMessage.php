@@ -11,31 +11,29 @@
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    1.2
 */
+namespace Nickvergessen\TrimMessage;
 
-/**
-* @ignore
-*/
-if (!defined('IN_PHPBB'))
+class TrimMessage
 {
-	exit;
-}
+	/** @var string */
+	protected $message			= '';
+	/** @var string */
+	protected $trimmed_message	= '';
+	/** @var string */
+	protected $bbcode_uid		= '';
+	/** @var string */
+	protected $append_str		= '';
 
-/**
-* phpbb_trim_message class
-*/
-class phpbb_trim_message
-{
-	/**
-	* Variables
-	*/
-	private $message			= '';
-	private $trimmed_message	= '';
-	private $bbcode_uid			= '';
-	private $append_str			= '';
-	private $length				= 0;
-	private $length_tolerance	= 0;
-	private $is_trimmed			= null;
-	private $bbcodes			= null;
+	/** @var int */
+	protected $length			= 0;
+	/** @var int */
+	protected $length_tolerance	= 0;
+
+	/** @var bool|null */
+	protected $is_trimmed;
+
+	/** @var PhpbbBbcodes */
+	protected $bbcodes;
 
 	/**
 	* Constructor
@@ -96,7 +94,7 @@ class phpbb_trim_message
 		}
 
 		$this->trim_action();
-		return $this->bbcodes->is_trimmed;
+		return $this->bbcodes->is_trimmed();
 	}
 
 	/**
@@ -108,7 +106,7 @@ class phpbb_trim_message
 		* Prepare the difficult action
 		*/
 		$this->trimmed_message = $this->message;
-		$this->bbcodes = new phpbb_trim_message_bbcodes($this->trimmed_message, $this->bbcode_uid, $this->length);
+		$this->bbcodes = new PhpbbBbcodes($this->trimmed_message, $this->bbcode_uid, $this->length);
 
 		/**
 		* Step 1:	Get a list of all BBCodes
@@ -124,7 +122,7 @@ class phpbb_trim_message
 		/**
 		* Step 3:	Trim message
 		*/
-		$this->trimmed_message = utf8_substr($this->message, 0, $this->bbcodes->trim_position);
+		$this->trimmed_message = utf8_substr($this->message, 0, $this->bbcodes->get_trim_position());
 
 		/**
 		* Step 4:	i)		Remove links/emails/smilies that are cut, somewhere
@@ -134,7 +132,7 @@ class phpbb_trim_message
 		*/
 		$this->remove_broken_links();
 		$text_length = utf8_strlen($this->trimmed_message);
-		if ($this->bbcodes->is_trimmed)
+		if ($this->bbcodes->is_trimmed())
 		{
 			$this->trimmed_message .= $this->append_str;
 		}

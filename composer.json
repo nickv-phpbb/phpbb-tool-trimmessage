@@ -1,0 +1,27 @@
+{
+	"name": "nickvergessen/phpbb-tool-trimmessage",
+	"description": "This tool contains a class, that is able to trim a message from the phpbb message_parser to a maximum length without breaking the bbcodes/smilies and links.",
+	"homepage": "https://github.com/nickvergessen/phpbb-tool-trimmessage",
+	"version": "1.3.0",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Joas Schilling",
+			"email": "nickvergessen@gmx.de",
+			"homepage": "https://github.com/nickvergessen",
+			"role": "Developer"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "4.1.*"
+	},
+	"autoload": {
+		"classmap": [
+			"src/"
+		]
+	}
+}

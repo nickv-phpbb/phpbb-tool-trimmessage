@@ -10,48 +10,39 @@
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
 * @version    1.2
 */
+namespace Nickvergessen\TrimMessage;
 
-/**
-* @ignore
-*/
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
-/**
-* phpbb_trim_message_bbcodes class
-*/
-class phpbb_trim_message_bbcodes
+class PhpbbBbcodes
 {
 	/**
 	* Some BBCodes, such as img and flash should not be split up in their middle.
 	* So I added a sensitive BBCode array which protects BBCodes from being split.
 	* You can also need to add your custom bbcodes in here.
 	*/
-	private $sensitive_bbcodes = array('url', 'flash', 'flash=', 'attachment', 'attachment=', 'img', 'email', 'email=');
-	private $is_sensitive = false;
+	protected $sensitive_bbcodes = array('url', 'flash', 'flash=', 'attachment', 'attachment=', 'img', 'email', 'email=');
+	protected $is_sensitive = false;
 
 	/**
 	* Variables
 	*/
-	private $message			= '';
-	private $bbcode_uid			= '';
-	private $bracket_replacement= '';
-	private $bbcode_list		= array();
-	private $array_size			= 0;
-	private $max_content_length	= 0;
-	private $cur_content_length	= 0;
-	private $cur_position		= 0;
-	public  $trim_position		= 0;
-	public  $is_trimmed			= false;
+	protected $message				= '';
+	protected $bbcode_uid			= '';
+	protected $bracket_replacement	= '';
+	protected $bbcode_list			= array();
+	protected $array_size			= 0;
+	protected $max_content_length	= 0;
+	protected $cur_content_length	= 0;
+	protected $cur_position			= 0;
+	protected $trim_position		= 0;
+	protected $is_trimmed			= false;
 
 	/**
-	* Constructor
-	*
-	* @param string	$message		parsed message you want to trim
-	* @param string	$bbcode_uid		bbcode_uid of the post
-	*/
+	 * Constructor
+	 *
+	 * @param string	$message		parsed message you want to trim
+	 * @param string	$bbcode_uid		bbcode_uid of the post
+	 * @param int	$content_length
+	 */
 	public function __construct($message, $bbcode_uid, $content_length)
 	{
 		$this->message				= $message;
@@ -60,6 +51,28 @@ class phpbb_trim_message_bbcodes
 		$this->array_size			= 0;
 	}
 
+	/**
+	 * Is the message trimmed?
+	 *
+	 * @return bool
+	 */
+	public function is_trimmed()
+	{
+		return $this->is_trimmed;
+	}
+
+	/**
+	 * Get the position where we trimmed the message
+	 * @return int
+	 */
+	public function get_trim_position()
+	{
+		return $this->trim_position;
+	}
+
+	/**
+	 * Screw your brain
+	 */
 	public function get_bbcodes()
 	{
 		$bbcode_end_length = utf8_strlen(':' . $this->bbcode_uid . ']');
@@ -85,9 +98,7 @@ class phpbb_trim_message_bbcodes
 
 		// Skip the first one.
 		array_shift($possible_bbcodes);
-		$num_possible_bbcodes	= sizeof($possible_bbcodes);
 		$num_tested_bbcodes		= 0;
-		$start_of_last_part		= 0;
 
 		$allow_close_quote = false;
 
@@ -270,13 +281,13 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Add a bbcode to the bbcode-list
-	*
-	* @param	string	$tag			BBCode-tag, Exp: code
-	* @param	int		$open_start		start-position of the bbcode-open-tag
-	*									(Exp: >[<code]) in the message
-	*/
-	private function open_bbcode($tag, $open_start)
+	 * Add a bbcode to the bbcode-list
+	 *
+	 * @param	string	$tag			BBCode-tag, Exp: code
+	 * @param	int		$open_start		start-position of the bbcode-open-tag
+	 *									(Exp: >[<code]) in the message
+	 */
+	protected function open_bbcode($tag, $open_start)
 	{
 		$this->bbcode_list[] = array(
 			'bbcode_tag'	=> $tag,
@@ -289,19 +300,19 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Add position to a listed bbcode
-	*
-	* @param	string	$tag		BBCode-tag, Exp: code
-	* @param	string	$part		part can be one of the following:
-	*								i)   open_end	=> [code>]<[/code]
-	*								ii)  close_open	=> [code]>[</code]
-	*								iii) close_end	=> [code][/code>]<
-	* @param	int		$position	start-position of the bbcode-open-tag
-	* @param	int		$tag_extended	with the list-bbcode we get some
-	*									information about the bbcode at the end
-	*									of it. So we need to readd that.
-	*/
-	private function bbcode_action($tag, $part, $position, $tag_extended = false)
+	 * Add position to a listed bbcode
+	 *
+	 * @param	string	$tag		BBCode-tag, Exp: code
+	 * @param	string	$part		part can be one of the following:
+	 *								i)   open_end	=> [code>]<[/code]
+	 *								ii)  close_open	=> [code]>[</code]
+	 *								iii) close_end	=> [code][/code>]<
+	 * @param	int		$position	start-position of the bbcode-open-tag
+	 * @param	mixed	$tag_extended	with the list-bbcode we get some
+	 *									information about the bbcode at the end
+	 *									of it. So we need to readd that.
+	 */
+	protected function bbcode_action($tag, $part, $position, $tag_extended = false)
 	{
 		for ($i = 1; $i <= $this->array_size; $i++)
 		{
@@ -321,8 +332,8 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Removes all BBcodes after a given position
-	*/
+	 * Removes all BBcodes after a given position
+	 */
 	public function remove_bbcodes_after()
 	{
 		for ($i = 1; $i <= $this->array_size; $i++)
@@ -337,8 +348,8 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Returns an array with BBCodes that need to be closed, after the position.
-	*/
+	 * Returns an array with BBCodes that need to be closed, after the position.
+	 */
 	public function get_open_bbcodes_after($position)
 	{
 		$bbcodes = array();
@@ -354,21 +365,21 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Get the length of the content (substract code for smilie and url parsing)
-	*
-	* @param	string	$content	Message to get the content length from
-	*								Exp:     <markup>text<markup2>
-	*								Content:         ^^^^
-	*
-	* @return	int		length of content without special markup
-	*/
+	 * Get the length of the content (substract code for smilie and url parsing)
+	 *
+	 * @param	string	$content	Message to get the content length from
+	 *								Exp:     <markup>text<markup2>
+	 *								Content:         ^^^^
+	 *
+	 * @return	int		length of content without special markup
+	 */
 	public function get_content_length($content)
 	{
 		$content = $this->restore_square_brackets_in_smilies($content);
 
 		$content_length = utf8_strlen($content);
 		$last_smiley = false;
-		$last_html_opening = $last_html_closing = 0;
+		$last_html_closing = 0;
 		while (($last_html_opening = utf8_strpos($content, '<', $last_html_closing)) !== false)
 		{
 			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
@@ -390,16 +401,16 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Get the position in the text, where we need to cut the message.
-	*
-	* Exp:     sample<markup>text<markup2>	AL = 8
-	* Content: ^^^^^^^^^^^^^^^^  Text-Position = 16
-	*
-	* @param	string	$content			Message to get the position in
-	* @param	int		$allowed_length		Content length we are allowed to add.
-	*
-	* @return	int		position in the markup-text where we cut the text
-	*/
+	 * Get the position in the text, where we need to cut the message.
+	 *
+	 * Exp:     sample<markup>text<markup2>	AL = 8
+	 * Content: ^^^^^^^^^^^^^^^^  Text-Position = 16
+	 *
+	 * @param	string	$content			Message to get the position in
+	 * @param	int		$allowed_length		Content length we are allowed to add.
+	 *
+	 * @return	int		position in the markup-text where we cut the text
+	 */
 	public function get_content_position($content, $allowed_length)
 	{
 		$content = $this->restore_square_brackets_in_smilies($content);
@@ -445,14 +456,17 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
-	* Filter BBCode-Tags:
-	*
-	* Exp:	[/*:m]					<= automatically added end of [*]
-	* Exp:	[/list:x]				<= end of [list] tag with list-style-element
-	* Exp:	[bbcode=param1;param2]	<= start of bbcode-tag with parameters
-	*
-	* @return	string		plain bbcode-tag
-	*/
+	 * Filter BBCode-Tags:
+	 *
+	 * Exp:	[/*:m]					<= automatically added end of [*]
+	 * Exp:	[/list:x]				<= end of [list] tag with list-style-element
+	 * Exp:	[bbcode=param1;param2]	<= start of bbcode-tag with parameters
+	 *
+	 * @param string	$bbcode_tag
+	 * @param bool	$strip_information
+	 * @param bool	$strip_equal
+	 * @return	string		plain bbcode-tag
+	 */
 	public function filter_bbcode_tag($bbcode_tag, $strip_information = true, $strip_equal = true)
 	{
 		if ($bbcode_tag[0] == '/')
@@ -478,7 +492,10 @@ class phpbb_trim_message_bbcodes
 		return $bbcode_tag;
 	}
 
-	private function replace_square_brackets_in_smilies()
+	/**
+	 * Replace square brackets in smiley codes
+	 */
+	protected function replace_square_brackets_in_smilies()
 	{
 		// Replace all [ that are inside of <> because they belong to smilies
 		if (utf8_strpos($this->message, '<'))
@@ -508,7 +525,13 @@ class phpbb_trim_message_bbcodes
 		}
 	}
 
-	private function restore_square_brackets_in_smilies($content)
+	/**
+	 * Restores square brackets in smiley codes
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	protected function restore_square_brackets_in_smilies($content)
 	{
 		// Replace our replacement with the [ again
 		return str_replace($this->bracket_replacement, '[', $content);
