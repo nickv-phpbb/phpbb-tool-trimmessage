@@ -46,7 +46,7 @@ class TrimTest extends \PHPUnit_Framework_TestCase
 				'bbcode_uid'	=> '2sda49fx',
 			),
 			array(
-				'message'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h',
+				'message'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h foo bar',
 				'bbcode_uid'	=> '2sda49fx',
 			),
 		);
@@ -208,8 +208,12 @@ class TrimTest extends \PHPUnit_Framework_TestCase
 			 * Breaking withing smiley with dot and square parentheses
 			 */
 			array(
-				'message_set'	=> 8, 'length' => 12, 'trimmed' => false,
-				'expected'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h',
+				'message_set'	=> 8, 'length' => 20, 'trimmed' => false,
+				'expected'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h foo bar',
+			),
+			array(
+				'message_set'	=> 8, 'length' => 10, 'trimmed' => true,
+				'expected'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h [...]',
 			),
 		);
 

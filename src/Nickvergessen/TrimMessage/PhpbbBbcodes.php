@@ -498,7 +498,7 @@ class PhpbbBbcodes
 	protected function replace_square_brackets_in_smilies()
 	{
 		// Replace all [ that are inside of <> because they belong to smilies
-		if (utf8_strpos($this->message, '<'))
+		if (utf8_strpos($this->message, '<') !== false)
 		{
 			$this->bracket_replacement = '{' . md5($this->message) . '}';
 			while (utf8_strpos($this->message, $this->bracket_replacement) !== false)
