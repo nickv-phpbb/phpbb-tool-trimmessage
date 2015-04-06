@@ -45,6 +45,10 @@ class TrimTest extends \PHPUnit_Framework_TestCase
 				'message'		=> 'h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h<!-- s[geek] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[geek]" title="Geek" /><!-- s[geek] -->h',
 				'bbcode_uid'	=> '2sda49fx',
 			),
+			array(
+				'message'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h foo bar',
+				'bbcode_uid'	=> '2sda49fx',
+			),
 		);
 
 		$cases = array(
@@ -198,6 +202,18 @@ class TrimTest extends \PHPUnit_Framework_TestCase
 			array(
 				'message_set' => 6, 'length' => 4, 'trimmed' => true,
 				'expected' => 'foo[url:2sda49fx]https://github.com/nickvergessen/phpbb3-tools-trim-message[/url:2sda49fx]b [...]',
+			),
+
+			/**
+			 * Breaking withing smiley with dot and square parentheses
+			 */
+			array(
+				'message_set'	=> 8, 'length' => 20, 'trimmed' => false,
+				'expected'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h foo bar',
+			),
+			array(
+				'message_set'	=> 8, 'length' => 10, 'trimmed' => true,
+				'expected'		=> '<!-- s[foo.bar] --><img src="{SMILIES_PATH}/icon_e_geek.gif" alt="[foo.bar]" title="Geek" /><!-- s[foo.bar] -->h [...]',
 			),
 		);
 
