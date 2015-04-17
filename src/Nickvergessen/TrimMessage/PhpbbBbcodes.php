@@ -1,17 +1,18 @@
 <?php
 
 /**
-* This file contains a class, to manage the bbcodes of a given phpbb
-* message_parser message.
-*
-* @author     Joas Schilling	<nickvergessen at gmx dot de>
-* @package    trim_message
-* @copyright  2011
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    1.2
-*/
+ * @copyright (c) Joas Schilling <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * For full copyright and license information, please see
+ * the license.txt file.
+ */
 namespace Nickvergessen\TrimMessage;
 
+/**
+ * This file contains a class, to manage the bbcodes of a given phpbb
+ * message_parser message.
+ */
 class PhpbbBbcodes
 {
 	/**

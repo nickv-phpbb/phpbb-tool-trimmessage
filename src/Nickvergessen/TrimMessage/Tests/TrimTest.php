@@ -1,10 +1,11 @@
 <?php
+
 /**
+ * @copyright (c) Joas Schilling <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
- * @package phpBB Translation Validator
- * @copyright (c) 2014 phpBB Ltd.
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 namespace Nickvergessen\TrimMessage\Tests;
 

@@ -1,18 +1,19 @@
 <?php
 
 /**
-* This file contains a class, that is able to trim a message from the phpbb
-* message_parser to a maximum length without breaking the bbcodes/smilies and
-* links.
-*
-* @author     Joas Schilling	<nickvergessen at gmx dot de>
-* @package    trim_message
-* @copyright  2011
-* @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    1.2
-*/
+ * @copyright (c) Joas Schilling <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * For full copyright and license information, please see
+ * the license.txt file.
+ */
 namespace Nickvergessen\TrimMessage;
 
+/**
+ * This file contains a class, that is able to trim a message from the phpbb
+ * message_parser to a maximum length without breaking the bbcodes/smilies and
+ * links.
+ */
 class TrimMessage
 {
 	/** @var string */
